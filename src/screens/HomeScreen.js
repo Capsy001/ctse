@@ -2,7 +2,28 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react'
 import { View, Text, FlatList, StyleSheet, Pressable, TextInput, TouchableOpacity, Keyboard } from 'react-native'
 import { FontAwesome } from "@expo/vector-icons";
-import {firebase,auth } from '../firebaseconfig';
+// import {firebase,auth } from '../../firebaseconfig';
+import {firebase,auth} from '../../firebaseconfig'
+import { MenuButton } from '../components';
+
+const tiles = [
+  {
+    title: `Room\nManagement`,
+    screen:'Room'
+  },
+  {
+    title: `Inventory\nManagement`,
+    screen:'Inventory'
+  },
+  {
+    title: `Food\nManagement`,
+    screen:'Food'
+  },
+  {
+    title: `House\nKeeping`,
+    screen:'House'
+  },
+]
 
 const HomeScreen = () => {
   const [todos, setTodos] = useState([]);
@@ -43,8 +64,7 @@ const HomeScreen = () => {
 
 
   return (
-    <View style={{flex:1}}>
-      <Text>Email: {auth.currentUser?.email}</Text>
+    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
       <TouchableOpacity
         onPress={handleSignOut}
         style={styles.buttonSignOut}
@@ -52,20 +72,12 @@ const HomeScreen = () => {
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>
 
-      <Text style={{
-        fontSize: 40,
-        fontWeight: "600",
-        textAlign: "center",
-        color: "#D93DE7",
-        marginTop: "35%",
-        marginBottom: "5%"
-      }}>
-        Hotel Management
-      </Text>
-    
-
-    
-     
+      <View style={styles.menus}>
+        {
+          tiles.map((item ,i) => <MenuButton title={item.title} onPress={()=> navigation.navigate(item.screen)} key={i} />)
+        }
+        
+      </View>
 
 </View>
   )
@@ -106,8 +118,8 @@ buttonSignOut: {
     width: '100%',
     padding: 10,
     borderRadius: 0,
-    marginTop: 100,
-    marginBottom:-90,
+    // marginTop: 100,
+    // marginBottom:-90,
     alignItems:"center",
 },
 
@@ -138,6 +150,11 @@ todoIcon:{
     fontSize:20,
     marginLeft:14,
 },
+menus: {
+  flexDirection:'row',
+  flexWrap: 'wrap',
+  justifyContent:'center'
+}
 });
 
 export default HomeScreen
