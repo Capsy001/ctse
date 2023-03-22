@@ -12,7 +12,10 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
+        console.log('user ',user)
         navigation.replace("Home")
+      }else{
+        console.log("hkpn")
       }
     })
 

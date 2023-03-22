@@ -5,6 +5,7 @@ import { FontAwesome } from "@expo/vector-icons";
 // import {firebase,auth } from '../../firebaseconfig';
 import {firebase,auth} from '../../firebaseconfig'
 import { MenuButton } from '../components';
+import { SafeAreaView } from 'react-native';
 
 const tiles = [
   {
@@ -64,7 +65,7 @@ const HomeScreen = () => {
 
 
   return (
-    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+    <SafeAreaView style={{flex:1,alignItems:'center',justifyContent:'center'}}>
       <TouchableOpacity
         onPress={handleSignOut}
         style={styles.buttonSignOut}
@@ -79,7 +80,7 @@ const HomeScreen = () => {
         
       </View>
 
-</View>
+</SafeAreaView>
   )
 }
 
