@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {TouchableOpacity , Text ,StyleSheet} from 'react-native';
 
-const CommonButton = ({onPress, title}) => {
+const CommonButton = ({onPress, title, style}) => {
     return (
-        <TouchableOpacity onPress={onPress} style={styles.container}>
+        <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
             <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>
     )
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     container:{
         width: '90%',
         padding: 15,
-        backgroundColor:'lightblue',
+        backgroundColor:'navy',
         marginVertical: 8,
         alignItems:'center',
         justifyContent:'center',
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     text:{
         fontSize: 16,
         textAlign:'center',
-        fontWeight: '600'
+        fontWeight: '600',
+        color:"#ffffff"
     }
 })

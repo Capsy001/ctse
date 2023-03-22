@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core'
-import React, {FunctionComponent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { auth } from '../../firebaseconfig'
 
@@ -14,8 +14,6 @@ const LoginScreen = () => {
       if (user) {
         console.log('user ',user)
         navigation.replace("Home")
-      }else{
-        console.log("hkpn")
       }
     })
 
