@@ -7,6 +7,9 @@ import {FoodScreen, HomeScreen,HouseScreen,InventoryScreen,LoginScreen, RoomScre
 import { SafeAreaView } from 'react-native';
 import AddRoom from './src/screens/rooms/AddRoom';
 
+// HosueKeeping
+import AddService from "./src/screens/house/addService";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +25,7 @@ export default function App() {
         <Stack.Screen name="Inventory" component={InventoryScreen} />
         <Stack.Screen name="House" component={HouseScreen} />
         <Stack.Screen name="AddRoom" component={AddRoom} />
+        <Stack.Screen name="AddService" component={AddService} />
      
       </Stack.Navigator>
     </NavigationContainer>

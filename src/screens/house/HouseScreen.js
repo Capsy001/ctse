@@ -1,11 +1,31 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { firebase, auth } from "../../../firebaseconfig";
 import { MenuButton } from "../../components";
+import { SafeAreaView } from "react-native";
 
 const HouseScreen = () => {
+    const [todos, setTodos] = useState([]);
+    const todoRef = firebase.firestore().collection("todos");
+    const [addData, setAddData] = useState("");
     const navigation = useNavigation();
+
+      useEffect(() => {
+        todoRef.orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
+          const todos = [];
+          querySnapshot.forEach((doc) => {
+            const { heading } = doc.data();
+            todos.push({
+              id: doc.id,
+              heading,
+            });
+          });
+          setTodos(todos);
+          console.log(todos);
+        });
+      }, []);
+
   const handleSignOut = () => {
     auth
       .signOut()
@@ -20,27 +40,48 @@ const HouseScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.component}>
-        <TouchableOpacity onPress={returnHome} style={styles.buttonReturnHome}>
-          <Text style={styles.buttonText}>Return Home</Text>
-        </TouchableOpacity>
+    <View style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.component}>
+          <TouchableOpacity
+            onPress={returnHome}
+            style={styles.buttonReturnHome}
+          >
+            <Text style={styles.buttonText}>Return Home</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.component}>
+          <TouchableOpacity
+            onPress={handleSignOut}
+            style={styles.buttonSignOut}
+          >
+            <Text style={styles.buttonText}>Sign out</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.component}>
-        <TouchableOpacity onPress={handleSignOut} style={styles.buttonSignOut}>
-          <Text style={styles.buttonText}>Sign out</Text>
+      <SafeAreaView style={{ flex: 1 }}>
+        <TouchableOpacity
+          style={styles.plus}
+          onPress={() => navigation.navigate("AddService")}
+        >
+          <Text style={{ fontSize: 30, color: "white" }}>+</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: "#DAACF0",
+    padding: 15,
+    borderRadius: 15,
+    margin: 5,
+    marginTop: 50,
+    marginHorizontal: 10,
+    justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
   },
   innerContainer: {
     alignItems: "center",
@@ -109,6 +150,17 @@ const styles = StyleSheet.create({
   menus: {
     flexDirection: "row",
     flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  plus: {
+    position: "absolute",
+    bottom: 40,
+    right: 40,
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    backgroundColor: "#2596be",
+    alignItems: "center",
     justifyContent: "center",
   },
 });
