@@ -1,29 +1,42 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image,} from "react-native";
 import { firebase, auth } from "../../../firebaseconfig";
 import { MenuButton } from "../../components";
 import { SafeAreaView } from "react-native";
+
+const Card = ({ title, description, imageUrl }) => {
+  return (
+    <View style={styles.card}>
+      <Image source={{ uri: imageUrl }} style={styles.image} />
+      <View style={styles.details}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.text}>{description}</Text>
+      </View>
+    </View>
+  );
+};
 
 const HouseScreen = () => {
     const [todos, setTodos] = useState([]);
     const todoRef = firebase.firestore().collection("todos");
     const [addData, setAddData] = useState("");
     const navigation = useNavigation();
+  const [cards, setCards] = useState([]);
 
       useEffect(() => {
-        todoRef.orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
-          const todos = [];
-          querySnapshot.forEach((doc) => {
-            const { heading } = doc.data();
-            todos.push({
+        const db = firebase.firestore();
+        const unsubscribe = db
+          .collection("services")
+          .onSnapshot((querySnapshot) => {
+            const data = querySnapshot.docs.map((doc) => ({
               id: doc.id,
-              heading,
-            });
+              ...doc.data(),
+            }));
+            setCards(data);
           });
-          setTodos(todos);
-          console.log(todos);
-        });
+
+        return unsubscribe;
       }, []);
 
   const handleSignOut = () => {
@@ -59,6 +72,16 @@ const HouseScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <ScrollView style={styles.scrolablecontainer}>
+        {cards.map((card) => (
+          <Card
+            key={card.id}
+            title={card.roomNumber}
+            description={card.note}
+            imageUrl={card.imageUrl}
+          />
+        ))}
+      </ScrollView>
       <SafeAreaView style={{ flex: 1 }}>
         <TouchableOpacity
           style={styles.plus}
@@ -82,6 +105,36 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
+  },
+  card: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 10,
+    margin: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    elevation: 3,
+  },
+  image: {
+    width: "100%",
+    height: 150,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  details: {
+    paddingHorizontal: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  scrolablecontainer: {
+    flex: 1,
   },
   innerContainer: {
     alignItems: "center",
