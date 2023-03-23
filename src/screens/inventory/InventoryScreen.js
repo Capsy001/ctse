@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 
-const InventoryScreen = () => {
+const InventoryScreen = ({navigation}) => {
     return (
         <SafeAreaView style={{flex:1}}>
 
