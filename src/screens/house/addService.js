@@ -42,7 +42,7 @@ const AddService = () => {
     };
 
   const handleAddService = () => {
-    if (roomNumber && value && note && userUid && reportNote && isSelected ) {
+    if (roomNumber && value && note && userUid ) {
       const db = firebase.firestore();
       db.collection("services")
         .add({
