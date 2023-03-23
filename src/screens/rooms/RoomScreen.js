@@ -1,22 +1,11 @@
-import React,{useState} from "react";
-import { View , Text ,Image  } from "react-native";
-import * as ImagePicker from 'expo-image-picker';
-import { Button } from "react-native";
-import { CommonButton, InputWithLabel, TextInput } from "../../components";
+import React from "react";
+import { Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native";
-import Checkbox from "expo-checkbox";
-import AddRoom from "./AddRoom";
 import { TouchableOpacity } from "react-native";
 
 
 const RoomScreen = ({navigation}) => {
-
-
-
-
-
-
 
 
     return (
