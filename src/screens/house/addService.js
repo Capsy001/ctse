@@ -9,12 +9,14 @@ import {
   TextInput,
   Button,
   Text,
+  ToastAndroid,
 } from "react-native";
 import { firebase, auth } from "../../../firebaseconfig";
 
 const AddService = () => {
-  const [serviceName, setServiceName] = useState("");
-  const [servicePrice, setServicePrice] = useState("");
+  const [roomNumber, setroomNumber] = useState("");
+  const [reportNote, setreportNote] = useState("");
+  const [note, setnote] = useState("");
   const [isSelected, setSelection] = useState(false);
   const [userUid, setUserUid] = useState("");
 
@@ -35,30 +37,36 @@ const AddService = () => {
       .catch((error) => alert(error.message));
   };
 
-  const returnHome = () => {
-    navigation.replace("Home");
-  };
-
   const returntoHouse = () => {
     navigation.replace("House");
     };
 
   const handleAddService = () => {
-    if (serviceName && servicePrice) {
+    if (roomNumber && value && note && userUid && reportNote && isSelected ) {
       const db = firebase.firestore();
       db.collection("services")
         .add({
-          name: serviceName,
-          price: servicePrice,
+          roomNumber: roomNumber,
+          Status: value,
+          cleaningBy: userUid,
+          reportNote: reportNote,
+          note: note,
+          isAdminReported: isSelected,
         })
         .then(() => {
           console.log("Service added successfully!");
+          ToastAndroid.show("Service added successfully!", ToastAndroid.SHORT);
         })
         .catch((error) => {
           console.log("Error adding service:", error);
+          ToastAndroid.show("Error adding service!", ToastAndroid.SHORT);
         });
-      setServiceName("");
-      setServicePrice("");
+      setnote("");
+      setroomNumber("");
+      setreportNote("");
+      setSelection(false);
+    }else{
+        ToastAndroid.show("Please fill all the fields!", ToastAndroid.SHORT);
     }
 
   };
@@ -104,17 +112,17 @@ const AddService = () => {
         <Text style={styles.text}>Room number:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Service Name"
-          value={serviceName}
-          onChangeText={setServiceName}
+          placeholder="Room number"
+          value={roomNumber}
+          onChangeText={setroomNumber}
         />
 
         <Text style={styles.text}>Note:</Text>
         <TextInput
           style={styles.input}
-          placeholder="Service Price"
-          value={servicePrice}
-          onChangeText={setServicePrice}
+          placeholder='Enter your notes'
+          value={note}
+          onChangeText={setnote}
         />
 
         <Text style={styles.text}>Report to admin?:</Text>
@@ -130,8 +138,8 @@ const AddService = () => {
             <TextInput
               style={styles.input}
               placeholder="Write small Explanation"
-              value={servicePrice}
-              onChangeText={setServicePrice}
+              value={reportNote}
+              onChangeText={setreportNote}
             />
           </View>
         )}
