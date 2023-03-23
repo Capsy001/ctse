@@ -1,6 +1,6 @@
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { db } from "../../firebaseconfig";
-import { doc, setDoc } from "firebase/firestore"; 
+import { collection, doc, setDoc } from "firebase/firestore"; 
 
 
 export const uploadImage = async (image) => {
@@ -14,8 +14,8 @@ export const uploadImage = async (image) => {
     console.log('Image uploaded to Firebase Storage successfully!');
 
         // Add a new document in collection "cities"
-await setDoc(doc(db, "cities", "LA"), {
-    name: "llllllllllllllllllllllll",
+await setDoc(doc(collection(db, "city")), {
+    name: "Los Angeles",
     state: "CA",
     country: "USA"
   });
