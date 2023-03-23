@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react'
-import { View, Text, FlatList, StyleSheet, Pressable, TextInput, TouchableOpacity, Keyboard } from 'react-native'
-import { FontAwesome } from "@expo/vector-icons";
-// import {firebase,auth } from '../../firebaseconfig';
+import { View, Text, StyleSheet,  TouchableOpacity } from 'react-native'
+
 import {firebase,auth} from '../../firebaseconfig'
 import { MenuButton } from '../components';
 import { SafeAreaView } from 'react-native';
+import {AntDesign} from '@expo/vector-icons';
+
 
 const tiles = [
   {
@@ -70,8 +71,11 @@ const HomeScreen = () => {
         onPress={handleSignOut}
         style={styles.buttonSignOut}
       >
+        <AntDesign name='logout' size={18} color='white' />
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>
+
+      <Text style={styles.heading}>Hotel Management</Text>
 
       <View style={styles.menus}>
         {
@@ -116,12 +120,19 @@ formContainer: {
 },
 buttonSignOut: {
     backgroundColor: '#F03729',
-    width: '100%',
+    width: "30%",
     padding: 10,
     borderRadius: 0,
     // marginTop: 100,
     // marginBottom:-90,
     alignItems:"center",
+    position:'absolute',
+    top: 30,
+    right: 20,
+    borderRadius: 4,
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center"
 },
 
 input: {
@@ -143,7 +154,8 @@ button: {
 },
 buttonText: {
     color: 'white',
-    fontSize: 20
+    fontSize: 15,
+    marginLeft:5
 },
 
 todoIcon:{
@@ -155,6 +167,12 @@ menus: {
   flexDirection:'row',
   flexWrap: 'wrap',
   justifyContent:'center'
+},
+heading:{
+  textAlign:"center",
+  fontSize: 28,
+  marginVertical:8
+
 }
 });
 

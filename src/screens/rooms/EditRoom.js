@@ -1,11 +1,11 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import { View , Text ,Image,ScrollView  } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { CommonButton, InputWithLabel, TextInput } from "../../components";
 import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native";
 import Checkbox from "expo-checkbox";
-import { addRoom, uploadImage } from "../../services/RoomService";
+import { addRoom, editRoom, uploadImage } from "../../services/RoomService";
+import {SafeAreaView} from "react-native-safe-area-context"
 
 const options= {
     mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -14,16 +14,18 @@ const options= {
     quality: 1,
 }
 
-const AddRoom = () => {
+const EditRoom = ({route,navigation}) => {
+
+    const {data} = route.params;
 
     const [image, setImage] = useState(null);
-    const [description , setDescription] = useState('');
-    const [beds , setBeds] = useState('');
-    const [rate , setRate] = useState('');
+    const [description , setDescription] = useState(data.description);
+    const [beds , setBeds] = useState(data.beds);
+    const [rate , setRate] = useState(data.rate);
     
-    const [ac , setAc] = useState(false);
-    const [tv, setTv]=useState(false);
-    const [balcony, setBalcony]=useState(false);
+    const [ac , setAc] = useState(data.rate);
+    const [tv, setTv]=useState(data.tv);
+    const [balcony, setBalcony]=useState(data.balcony);
 
 
   const pickImage = async () => {
@@ -58,10 +60,10 @@ const AddRoom = () => {
     setDescription('');
     setBeds('');
     setRate('');
-    setImage(null);
+    // setImage(null);
   }
 
-  const handleAdd = async () => {
+  const handleUpdate = async () => {
     try{
 
         if(image == null){
@@ -77,16 +79,23 @@ const AddRoom = () => {
             return alert("Rate cannot be empty")
         }
         
-        const url = await uploadImage(image.uri);
-
-        const data = {
-            description , beds, rate , ac, "image": url, tv, balcony
+        const form = {
+            description , beds, rate , ac, image: data.image, tv, balcony
         };
-        const res = await addRoom(data);
-        if(res){
-            alert('Room added to the database!')
+
+        if(image!==null){
+
+            const url = await uploadImage(image.uri);
+            form.image=url
         }
-        resetForm()
+
+        
+        const res = await editRoom(data.id, form);
+        if(res){
+            alert('Room Updated!')
+            navigation.navigate("Room");
+        }
+        
     }catch(e){
         console.log('erorr main ',e)
     }
@@ -98,11 +107,7 @@ const AddRoom = () => {
     <SafeAreaView style={{flex:1}}>
         <ScrollView contentContainerStyle={{alignItems:'center'}}>
         <Text style={styles.heading}>Add Room</Text>
-        {
-            image ?
-            <Image source={{ uri: image.uri }} style={styles.image} /> :
-            <View style={{...styles.image,backgroundColor:'rgba(0,0,0,0.1)'}} />
-        }
+            <Image source={{ uri: image ? image.uri : data.image}} style={styles.image} />
         <View style={styles.btns}>
         <CommonButton title={'Select Image'} onPress={pickImage} style={styles.imagebtn}/>
         <CommonButton title={'Capture Image'} onPress={captureImage} style={styles.imagebtn}/>
@@ -130,14 +135,14 @@ const AddRoom = () => {
         
         </View>
 
-        <CommonButton title={'ADD'} onPress={handleAdd} />
+        <CommonButton title={'UPDATE'} onPress={handleUpdate} />
         </ScrollView>
         
     </SafeAreaView>
     )
 }
 
-export default AddRoom;
+export default EditRoom;
 
 const styles = StyleSheet.create({
     image:{
