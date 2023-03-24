@@ -26,9 +26,8 @@ const AddRoom = ({navigation}) => {
     const [tv, setTv]=useState(false);
     const [balcony, setBalcony]=useState(false);
 
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
+    //from stack overflow
+    const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync(options);
 
     if (!result.canceled) {
@@ -36,6 +35,7 @@ const AddRoom = ({navigation}) => {
     }
   };
 
+  //from stack overflow
   const captureImage = async () => {
 
     const permissions = await ImagePicker.requestCameraPermissionsAsync();

@@ -1,23 +1,31 @@
 import React, { useState } from "react";
-import { View , Text ,Image  } from "react-native";
+import { View , Text ,Image, TouchableOpacity  } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { CommonButton, InputWithLabel, TextInput } from "../../components";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native";
 import { addStoreItem, uploadImage } from "../../services/InventoryService";
+import DropDownPicker from "react-native-dropdown-picker";
+import { AntDesign } from "@expo/vector-icons";
 // import { uploadImage } from "../../services/RoomService";
 
-const AddStoreItem = () => {
+const AddStoreItem = ({navigation}) => {
 
+    const [image, setImage] = useState(null);
     const [itemName, setItemName] = useState('');
-    const [itemCategory, setItemCategory] = useState('');
-    const [itemImage, setItemImage] = useState(null);
     const [quantity, setQuantity] = useState('');
     
-    // const AddItem
-
+    // react native dropdown picker documentation
+      const [open, setOpen] = useState(false);
+      const [itemCategory, setValue] = useState(null);
+      const [items, setItems] = useState([
+      {label: 'Vegetable', value: 'Vegetable'},
+      {label: 'Fruit', value: 'Fruit'},
+      {label: 'Beverages', value: 'Beverages'},
+      {label: 'Kitchen Supplies', value: 'Kitchen Supplies'}
+      ]);
+    
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
@@ -46,12 +54,22 @@ const AddStoreItem = () => {
                 return alert("Quantity cannot be empty")
             }
             
-            const url = await uploadImage(itemImage.uri);
+            const url = await uploadImage(image.uri);
     
             const data = {
-                itemName , itemCategory, "image": url, quantity
+                itemName: itemName,
+                itemCategory: itemCategory,
+                quantity: quantity,
+                image: url
             };
             const res = await addStoreItem(data);
+
+            const resetForm = () => {
+                setImage(null);
+                setItemName('');
+                setQuantity('');
+              }
+
             if(res){
                 alert('Item added to the database!')
             }
@@ -60,19 +78,39 @@ const AddStoreItem = () => {
             console.log('erorr main ',e)
         }
       }
+      
+
+      const handleGoBack=()=>{
+        navigation.goBack()
+      }
+
     
     
     
         return (
         <SafeAreaView>
+            <TouchableOpacity
+        onPress={handleGoBack}
+        style={styles.buttonGoBack}
+      >
+        <AntDesign name='back' size={18} color='white' />
+      <Text style={styles.buttonText}>GO BACK</Text>
+    </TouchableOpacity>
             <Text style={styles.heading}>Add Store Item</Text>
+            <View style={{position:"relative", zIndex:1}}>
+            <DropDownPicker style={styles.dropdown} open={open}
+            value={itemCategory}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}/>
+            </View>
             <InputWithLabel label={"Item Name"} value={itemName} onChangeText={setItemName} />
-            <InputWithLabel label={"Item Category"} value={itemCategory} onChangeText={setItemCategory} />
-            <selectDropDown label={"Category"} value={itemCategory} onChangeText={setItemCategory}/>
+            
         
             {
-                itemImage ?
-                <Image source={{ uri: itemImage.uri }} style={styles.image} /> :
+                image ?
+                <Image source={{ uri: image.uri }} style={styles.image} /> :
                 <View style={{...styles.image,backgroundColor:'rgba(0,0,0,0.1)'}} />
             }
             <CommonButton title={'Select Image'} onPress={pickImage} style={{backgroundColor:"#038ad3"}}/>
@@ -121,5 +159,36 @@ const styles = StyleSheet.create({
         fontSize: 28,
         marginVertical:8
 
+    },
+    dropdown:{
+        width: "90%",
+        alignSelf:"center",
+        alignContent: "center",
+        justifyContent: "center",
+        backgroundColor: 'white',
+        zIndex: 100, 
+        elevation: 1000,
+        position: "relative"
+    },
+    buttonGoBack: {
+        backgroundColor: 'green',
+        width: "30%",
+        padding: 10,
+        // marginTop: 100,
+        // marginBottom:-90,
+        alignItems:"flex-end",
+        // position:'absolute',
+        alignSelf:"flex-end",
+        right: 20,
+        top: 10,
+        borderRadius: 4,
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 15,
+        marginLeft:5
     }
 })

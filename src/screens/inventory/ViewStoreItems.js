@@ -1,7 +1,7 @@
 import React from 'react'
 import {Text ,StyleSheet, Image,View, Alert} from 'react-native';
 import { CommonButton } from '../../components';
-import { deleteItem } from '../../services/RoomService';
+import { deleteItem } from '../../services/InventoryService';
 
 const ViewStoreItems = ({ route,navigation}) => {
 
@@ -29,7 +29,7 @@ const ViewStoreItems = ({ route,navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>View Store Items List</Text>
+            <Text style={styles.title}>View Item</Text>
             <Image source={{uri: data.image}} style={styles.image} />
             <View style={styles.inside}>
                 <View style={styles.row}>
@@ -55,7 +55,7 @@ const ViewStoreItems = ({ route,navigation}) => {
                 </Text>
                 </View>
             </View>
-            <CommonButton title={'Edit'}  onPress={()=>navigation.navigate("EditStoreItem", {data})}/>
+            <CommonButton title={'Edit'}  onPress={()=>navigation.navigate("EditItem", {data})}/>
             <CommonButton title={'Delete'} onPress={confirmDelete}  style={{backgroundColor:'red'}} />
         </View>
     )

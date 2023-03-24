@@ -16,6 +16,8 @@ import ViewService from './src/screens/house/ViewService';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import EditRoom from './src/screens/rooms/EditRoom';
+import ViewStoreItems from './src/screens/inventory/ViewStoreItems';
+import EditItem from './src/screens/inventory/EditItem';
 
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +42,9 @@ export default function App() {
         <Stack.Screen name="EditService" component={EditService} />
         <Stack.Screen name="ViewService" component={ViewService} />
         <Stack.Screen name="AddStoreItem" component={AddStoreItem} />
+        <Stack.Screen name="ViewStoreItems" component={ViewStoreItems} />
+        <Stack.Screen name="EditItem" component={EditItem} />
+        
      
       </Stack.Navigator>
     </NavigationContainer>

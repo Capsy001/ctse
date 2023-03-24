@@ -47,6 +47,8 @@ export const deleteRoom = async (id) => {
   return collectionrRef.doc(id).delete().then(() => true).catch(e=> console.log('Delete error ',e));
 }
 
+
+
 export const editRoom=(id,data)=>{
 
   console.log(data)
