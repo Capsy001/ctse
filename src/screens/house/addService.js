@@ -56,6 +56,7 @@ const AddService = () => {
         .then(() => {
           console.log("Service added successfully!");
           ToastAndroid.show("Service added successfully!", ToastAndroid.SHORT);
+          navigation.replace("House");
         })
         .catch((error) => {
           console.log("Error adding service:", error);
