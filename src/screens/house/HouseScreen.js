@@ -72,16 +72,19 @@ const HouseScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView style={styles.scrolablecontainer}>
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            title={card.roomNumber}
-            description={card.note}
-            imageUrl={card.imageUrl}
-          />
-        ))}
-      </ScrollView>
+      <View style={{ flex: 3,margin:10 }}>
+        <ScrollView style={styles.scrolablecontainer}>
+          {cards.map((card) => (
+            <Card
+              key={card.id}
+              title={card.roomNumber}
+              description={card.note}
+              imageUrl={card.imageUrl}
+            />
+          ))}
+        </ScrollView>
+      </View>
+
       <SafeAreaView style={{ flex: 1 }}>
         <TouchableOpacity
           style={styles.plus}
@@ -134,7 +137,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   scrolablecontainer: {
-    flex: 1,
+    flex: 2,
+    flexDirection: "column",
   },
   innerContainer: {
     alignItems: "center",
