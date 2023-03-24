@@ -14,7 +14,7 @@ import { firebase, auth } from "../../../firebaseconfig";
 import { MenuButton } from "../../components";
 import { SafeAreaView } from "react-native";
 
-const Card = ({ id, title, description, imageUrl }) => {
+const Card = ({ id, Status,cleaningBy,image,isAdminReported,note,reportNote, roomNumber }) => {
   const navigation = useNavigation();
   const askingtoDelete = () => {
     Alert.alert("Delete Data", "Are you sure you want to delete this?", [
@@ -43,17 +43,17 @@ const Card = ({ id, title, description, imageUrl }) => {
   };
 
   const handleEdit = () => {
-    navigation.navigate("EditService", { id: id, title: title, description: description, imageUrl: imageUrl });
+    navigation.navigate("EditService", { id: id, Status: Status,cleaningBy:cleaningBy,image:image,isAdminReported:isAdminReported,note:note,reportNote:reportNote, roomNumber: roomNumber });
     // navigate to edit screen with card data
     // e.g. using the React Navigation package
     // ...
   };
   return (
     <View style={styles.card}>
-      <Image source={{ uri: imageUrl }} style={styles.image} />
+      <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.details}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.text}>{description}</Text>
+        <Text style={styles.title}>Room Number: {roomNumber}</Text>
+        <Text style={styles.text}>Note: {note}</Text>
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.deleteButton} onPress={askingtoDelete}>
@@ -128,9 +128,13 @@ const HouseScreen = () => {
             <Card
               key={card.id}
               id={card.id}
-              title={card.roomNumber}
-              description={card.note}
-              imageUrl={card.image}
+              Status={card.Status}
+              cleaningBy={card.cleaningBy}
+              image={card.image}
+              isAdminReported={card.isAdminReported}
+              note={card.note}
+              reportNote={card.reportNote}
+              roomNumber={card.roomNumber}
             />
           ))}
         </ScrollView>
