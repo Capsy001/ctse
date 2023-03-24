@@ -48,22 +48,44 @@ const Card = ({ id, Status,cleaningBy,image,isAdminReported,note,reportNote, roo
     // e.g. using the React Navigation package
     // ...
   };
+
+  const handleView = () => {
+    console.log("Viewing Service");
+    navigation.navigate("ViewService", {
+      id: id,
+      Status: Status,
+      cleaningBy: cleaningBy,
+      image: image,
+      isAdminReported: isAdminReported,
+      note: note,
+      reportNote: reportNote,
+      roomNumber: roomNumber,
+    });
+    // navigate to edit screen with card data
+    // e.g. using the React Navigation package
+    // ...
+  };
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: image }} style={styles.image} />
-      <View style={styles.details}>
-        <Text style={styles.title}>Room Number: {roomNumber}</Text>
-        <Text style={styles.text}>Note: {note}</Text>
+    <TouchableOpacity onPress={handleView}>
+      <View style={styles.card}>
+        <Image source={{ uri: image }} style={styles.image} />
+        <View style={styles.details}>
+          <Text style={styles.title}>Room Number: {roomNumber}</Text>
+          <Text style={styles.text}>Note: {note}</Text>
+        </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={askingtoDelete}
+          >
+            <Text style={styles.buttonText}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.buttons}>
-        <TouchableOpacity style={styles.deleteButton} onPress={askingtoDelete}>
-          <Text style={styles.buttonText}>Delete</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
-          <Text style={styles.buttonText}>Edit</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
