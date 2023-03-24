@@ -130,7 +130,7 @@ const HouseScreen = () => {
               id={card.id}
               title={card.roomNumber}
               description={card.note}
-              imageUrl={card.imageUrl}
+              imageUrl={card.image}
             />
           ))}
         </ScrollView>

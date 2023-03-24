@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from "expo-checkbox";
 import DropDownPicker from "react-native-dropdown-picker";
+import { SafeAreaView } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { RadioButton } from "react-native-paper";
 import {
   View,
   StyleSheet,
@@ -9,11 +12,23 @@ import {
   TextInput,
   Button,
   Text,
+  Image,
   ToastAndroid,
+  ScrollView,
 } from "react-native";
 import { firebase, auth } from "../../../firebaseconfig";
+import { uploadImage } from "../../services/RoomService";
+import { CommonButton, InputWithLabel } from "../../components";
+
+const options = {
+  mediaTypes: ImagePicker.MediaTypeOptions.All,
+  allowsEditing: true,
+  aspect: [4, 3],
+  quality: 1,
+};
 
 const AddService = () => {
+  const [image, setImage] = useState(null);
   const [roomNumber, setroomNumber] = useState("");
   const [reportNote, setreportNote] = useState("");
   const [note, setnote] = useState("");
@@ -41,10 +56,36 @@ const AddService = () => {
     navigation.replace("House");
     };
 
-  const handleAddService = () => {
-    if (roomNumber && value && note && userUid ) {
-      const db = firebase.firestore();
-      db.collection("services")
+      const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync(options);
+
+        if (!result.canceled) {
+          console.log(result.assets[0]);
+          setImage(result.assets[0]);
+        }
+      };
+
+      const captureImage = async () => {
+        const permissions = await ImagePicker.requestCameraPermissionsAsync();
+        console.log("per ", permissions);
+        if (permissions.status == "granted") {
+          const result = await ImagePicker.launchCameraAsync(options);
+          console.log("result ", result);
+          if (!result.cancelled) {
+            console.log(result.uri);
+            setImages({ ...images, document: result.uri });
+          }
+        } else {
+          alert("Permission not granted!");
+        }
+      };
+
+  const handleAddService = async () => {
+    if (roomNumber && value && note && userUid && image!=null ) {
+      const url = await uploadImage(image.uri);
+      const db = await firebase.firestore();
+      await db.collection("services")
         .add({
           roomNumber: roomNumber,
           Status: value,
@@ -52,6 +93,7 @@ const AddService = () => {
           reportNote: reportNote,
           note: note,
           isAdminReported: isSelected,
+          image: url,
         })
         .then(() => {
           console.log("Service added successfully!");
@@ -105,67 +147,109 @@ const AddService = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          <Text style={styles.text}>Service creating by:</Text>
+          <Text style={styles.Usertext}>{userUid}</Text>
 
-      <View style={styles.containerInput}>
-        <Text style={styles.text}>Service creating by:</Text>
-        <Text style={styles.Usertext}>{userUid}</Text>
-
-        <Text style={styles.text}>Room number:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Room number"
-          value={roomNumber}
-          onChangeText={setroomNumber}
-        />
-
-        <Text style={styles.text}>Note:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Enter your notes'
-          value={note}
-          onChangeText={setnote}
-        />
-
-        <Text style={styles.text}>Report to admin?:</Text>
-        <Checkbox
-          value={isSelected}
-          onValueChange={setSelection}
-          style={styles.checkbox}
-        />
-
-        {isSelected && (
-          <View>
-            <Text style={styles.text}>Explain to the admin:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Write small Explanation"
-              value={reportNote}
-              onChangeText={setreportNote}
+          {image ? (
+            <Image source={{ uri: image.uri }} style={styles.image} />
+          ) : (
+            <View
+              style={{ ...styles.image, backgroundColor: "rgba(0,0,0,0.1)" }}
+            />
+          )}
+          <View style={styles.btns}>
+            <CommonButton
+              title={"Select Image"}
+              onPress={pickImage}
+              style={styles.imagebtn}
+            />
+            <CommonButton
+              title={"Capture Image"}
+              onPress={captureImage}
+              style={styles.imagebtn}
             />
           </View>
-        )}
 
-        <Text style={styles.text}>Status:</Text>
-        <DropDownPicker
-          style={{
-            backgroundColor: "#DAACF0",
-          }}
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-        />
-      </View>
-      <View style={styles.containerInputSubmit}>
-        <Button title="Add Service" onPress={handleAddService} />
-      </View>
+          <Text style={styles.text}>Room number:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Room number"
+            value={roomNumber}
+            onChangeText={setroomNumber}
+          />
+
+          <Text style={styles.text}>Note:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your notes"
+            value={note}
+            onChangeText={setnote}
+          />
+
+          <Text style={styles.text}>Report to admin?:</Text>
+          <Checkbox
+            value={isSelected}
+            onValueChange={setSelection}
+            style={styles.checkbox}
+          />
+
+          {isSelected && (
+            <View>
+              <Text style={styles.text}>Explain to the admin:</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Write small Explanation"
+                value={reportNote}
+                onChangeText={setreportNote}
+              />
+            </View>
+          )}
+
+          <Text style={styles.text}>Status:</Text>
+          <View>
+            <View style={styles.containerRadio}>
+              <RadioButton
+                value="clean"
+                label="CLEANED"
+                status={value === "clean" ? "checked" : "unchecked"}
+                onPress={() => {
+                  setValue("clean");
+                }}
+              />
+              <Text style={styles.text}>ALREADY CLEANED</Text>
+            </View>
+            <View style={styles.containerRadio}>
+              <RadioButton
+                value="needsclean"
+                label="NEED TO CLEAN"
+                status={value === "needsclean" ? "checked" : "unchecked"}
+                onPress={() => {
+                  setValue("needsclean");
+                }}
+              />
+              <Text style={styles.text}>NEED TO CLEAN</Text>
+            </View>
+          </View>
+
+          <View style={styles.containerInputSubmit}>
+            <Button title="Add Service" onPress={handleAddService} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  image: {
+    width: "90%",
+    height: 200,
+    alignSelf: "center",
+    borderRadius: 8,
+    marginBottom: 10,
+  },
   container: {
     backgroundColor: "#DAACF0",
     padding: 15,
@@ -176,6 +260,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
+  },
+  containerRadio: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   containerInput: {
     backgroundColor: "#DAACF0",
@@ -237,6 +325,15 @@ const styles = StyleSheet.create({
     // marginTop: 100,
     // marginBottom:-90,
     alignItems: "center",
+  },
+  btns: {
+    width: "90%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  imagebtn: {
+    backgroundColor: "#038ad3",
+    width: "45%",
   },
 });
 
