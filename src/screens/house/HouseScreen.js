@@ -1,17 +1,54 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image,} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ToastAndroid,
+} from "react-native";
 import { firebase, auth } from "../../../firebaseconfig";
 import { MenuButton } from "../../components";
 import { SafeAreaView } from "react-native";
 
-const Card = ({ title, description, imageUrl }) => {
+const Card = ({ id, title, description, imageUrl }) => {
+  const handleDelete = async () => {
+    const db = firebase.firestore();
+    await db
+      .collection("services")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Service deleted successfully!");
+        ToastAndroid.show("Service deleted successfully!", ToastAndroid.SHORT);
+      })
+      .catch((error) => {
+        console.error("Error removing Service: ", error);
+        ToastAndroid.show("Error removing Service!", ToastAndroid.SHORT);
+      });
+  };
+
+  const handleEdit = () => {
+    // navigate to edit screen with card data
+    // e.g. using the React Navigation package
+    // ...
+  };
   return (
     <View style={styles.card}>
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <View style={styles.details}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.text}>{description}</Text>
+      </View>
+      <View style={styles.buttons}>
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+          <Text style={styles.buttonText}>Delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
+          <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -72,11 +109,12 @@ const HouseScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flex: 3,margin:10 }}>
+      <View style={{ flex: 3, margin: 10 }}>
         <ScrollView style={styles.scrolablecontainer}>
           {cards.map((card) => (
             <Card
               key={card.id}
+              id={card.id}
               title={card.roomNumber}
               description={card.note}
               imageUrl={card.imageUrl}
@@ -193,6 +231,18 @@ const styles = StyleSheet.create({
     width: 80,
     alignItems: "center",
     justifyContent: "center",
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    borderRadius: 5,
+    padding: 5,
+    marginRight: 5,
+  },
+  editButton: {
+    backgroundColor: "blue",
+    borderRadius: 5,
+    padding: 5,
+    marginLeft: 5,
   },
   buttonText: {
     color: "white",
