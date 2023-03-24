@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { CommonButton, InputWithLabel, TextInput } from "../../components";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native";
+import { addStoreItem, uploadImage } from "../../services/InventoryService";
 // import { uploadImage } from "../../services/RoomService";
 
 const AddStoreItem = () => {
@@ -31,8 +32,30 @@ const AddStoreItem = () => {
     
       const AddItem = async () => {
         try{
-            const res = await uploadImage(itemImage.uri);
-            console.log('done ',res);
+
+            // if(itemImage == null){
+            //     return alert("Image cannot be empty")
+            // };
+            if(itemName.length == 0){
+                return alert("Item name cannot be empty")
+            }
+            if(itemCategory.length == 0){
+                return alert("Item category cannot be empty")
+            }
+            if(quantity.length == 0){
+                return alert("Quantity cannot be empty")
+            }
+            
+            const url = await uploadImage(itemImage.uri);
+    
+            const data = {
+                itemName , itemCategory, "image": url, quantity
+            };
+            const res = await addStoreItem(data);
+            if(res){
+                alert('Item added to the database!')
+            }
+            resetForm()
         }catch(e){
             console.log('erorr main ',e)
         }
