@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {FoodScreen, HomeScreen,HouseScreen,InventoryScreen,LoginScreen, RoomScreen, ViewRoom  } from './src/screens';
 import AddRoom from './src/screens/rooms/AddRoom';
 import AddStoreItem from './src/screens/inventory/AddStoreItem';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // HosueKeeping
 import AddService from "./src/screens/house/addService";
@@ -17,6 +18,8 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <SafeAreaProvider>
+
     <SafeAreaView style={{flex:1}}>
     <NavigationContainer>
        <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -35,6 +38,7 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
     </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
