@@ -1,11 +1,12 @@
 import React,{useState, useEffect} from "react";
-import { View , Text ,Image,ScrollView  } from "react-native";
+import { View , Text ,Image,ScrollView,TouchableOpacity  } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { CommonButton, InputWithLabel, TextInput } from "../../components";
 import { StyleSheet } from "react-native";
 import Checkbox from "expo-checkbox";
 import { addRoom, editRoom, uploadImage } from "../../services/RoomService";
 import {SafeAreaView} from "react-native-safe-area-context"
+import {AntDesign} from '@expo/vector-icons';
 
 const options= {
     mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -101,12 +102,24 @@ const EditRoom = ({route,navigation}) => {
     }
   }
 
+  const handleGoBack=()=>{
+    navigation.goBack()
+  }
+
 
 
     return (
     <SafeAreaView style={{flex:1}}>
+        
         <ScrollView contentContainerStyle={{alignItems:'center'}}>
-        <Text style={styles.heading}>Add Room</Text>
+        <TouchableOpacity
+        onPress={handleGoBack}
+        style={styles.buttonGoBack}
+      >
+        <AntDesign name='back' size={18} color='white' />
+      <Text style={styles.buttonText}>GO BACK</Text>
+    </TouchableOpacity>
+        <Text style={styles.heading}>Edit Room</Text>
             <Image source={{ uri: image ? image.uri : data.image}} style={styles.image} />
         <View style={styles.btns}>
         <CommonButton title={'Select Image'} onPress={pickImage} style={styles.imagebtn}/>
@@ -187,5 +200,25 @@ const styles = StyleSheet.create({
     imagebtn:{
         backgroundColor:"#038ad3",
         width: '45%',
+    },
+    buttonGoBack: {
+        backgroundColor: 'green',
+        width: "30%",
+        padding: 10,
+        // marginTop: 100,
+        // marginBottom:-90,
+        alignItems:"flex-end",
+        // position:'absolute',
+        alignSelf:"flex-end",
+        right: 20,
+        borderRadius: 4,
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 15,
+        marginLeft:5
     }
 })

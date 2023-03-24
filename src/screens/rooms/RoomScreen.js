@@ -6,6 +6,7 @@ import { RoomTile } from "../../components";
 import { getRooms } from "../../services/RoomService";
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { useIsFocused } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
 
 
 const RoomScreen = ({navigation}) => {
@@ -25,10 +26,21 @@ const RoomScreen = ({navigation}) => {
         isFocused && loadData();
     },[isFocused])
 
+    const handleGoBack=()=>{
+        navigation.goBack()
+      }
 
 
     return (
     <SafeAreaView style={{flex:1}}>
+
+<TouchableOpacity
+        onPress={handleGoBack}
+        style={styles.buttonGoBack}
+      >
+        <AntDesign name='back' size={18} color='white' />
+      <Text style={styles.buttonText}>GO BACK</Text>
+    </TouchableOpacity>
 
         <Text style={styles.title}>Rooms List</Text>
 
@@ -72,6 +84,27 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         width:'100%',
         marginVertical: 20
+    },
+    buttonGoBack: {
+        backgroundColor: 'green',
+        width: "30%",
+        padding: 10,
+        // marginTop: 100,
+        // marginBottom:-90,
+        alignItems:"flex-end",
+        // position:'absolute',
+        alignSelf:"flex-end",
+        right: 20,
+        borderRadius: 4,
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 15,
+        marginLeft:5
     }
+
     
 })

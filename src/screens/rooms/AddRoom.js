@@ -3,9 +3,10 @@ import { View , Text ,Image,ScrollView  } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { CommonButton, InputWithLabel, TextInput } from "../../components";
 import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, TouchableOpacity } from "react-native";
 import Checkbox from "expo-checkbox";
 import { addRoom, uploadImage } from "../../services/RoomService";
+import { AntDesign } from "@expo/vector-icons";
 
 const options= {
     mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -14,7 +15,7 @@ const options= {
     quality: 1,
 }
 
-const AddRoom = () => {
+const AddRoom = ({navigation}) => {
 
     const [image, setImage] = useState(null);
     const [description , setDescription] = useState('');
@@ -92,11 +93,20 @@ const AddRoom = () => {
     }
   }
 
-
+  const handleGoBack=()=>{
+    navigation.goBack()
+  }
 
     return (
     <SafeAreaView style={{flex:1}}>
         <ScrollView contentContainerStyle={{alignItems:'center'}}>
+        <TouchableOpacity
+        onPress={handleGoBack}
+        style={styles.buttonGoBack}
+      >
+        <AntDesign name='back' size={18} color='white' />
+      <Text style={styles.buttonText}>GO BACK</Text>
+    </TouchableOpacity>
         <Text style={styles.heading}>Add Room</Text>
         {
             image ?
@@ -182,5 +192,26 @@ const styles = StyleSheet.create({
     imagebtn:{
         backgroundColor:"#038ad3",
         width: '45%',
+    },
+    buttonGoBack: {
+        backgroundColor: 'green',
+        width: "30%",
+        padding: 10,
+        // marginTop: 100,
+        // marginBottom:-90,
+        alignItems:"flex-end",
+        // position:'absolute',
+        alignSelf:"flex-end",
+        right: 20,
+        top: 10,
+        borderRadius: 4,
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 15,
+        marginLeft:5
     }
 })

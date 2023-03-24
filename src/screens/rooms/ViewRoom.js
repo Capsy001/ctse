@@ -1,7 +1,8 @@
 import React from 'react'
-import {Text ,StyleSheet, Image,View, Alert} from 'react-native';
+import {Text ,StyleSheet, Image,View, Alert, TouchableOpacity} from 'react-native';
 import { CommonButton } from '../../components';
 import { deleteRoom } from '../../services/RoomService';
+import {AntDesign} from '@expo/vector-icons';
 
 const ViewRoom = ({ route,navigation}) => {
 
@@ -26,9 +27,20 @@ const ViewRoom = ({ route,navigation}) => {
             alert('An error occured')
         }
     }
+    const handleGoBack=()=>{
+        navigation.goBack()
+      }
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity
+        onPress={handleGoBack}
+        style={styles.buttonGoBack}
+      >
+        <AntDesign name='back' size={18} color='white' />
+      <Text style={styles.buttonText}>GO BACK</Text>
+    </TouchableOpacity>
+
             <Text style={styles.title}>View Room</Text>
             <Image source={{uri: data.image}} style={styles.image} />
             <View style={styles.inside}>
@@ -115,6 +127,26 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         width:'100%',
         marginVertical: 20
+    },
+    buttonGoBack: {
+        backgroundColor: 'green',
+        width: "30%",
+        padding: 10,
+        marginTop: 30,
+        // marginBottom:-90,
+        alignItems:"flex-end",
+        // position:'absolute',
+        alignSelf:"flex-end",
+        right: 20,
+        borderRadius: 4,
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 15,
+        marginLeft:5
     }
 
 })
