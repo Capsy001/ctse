@@ -14,12 +14,6 @@ export const uploadImage = async (image) => {
     const storageRef = ref(storage, `images/${filename}`);
     console.log('Image uploaded to Firebase Storage successfully!');
 
-        // Add a new document in collection "cities"
-await setDoc(doc(collection(db, "store")), {
-    itemName: "Carrot",
-    itemCategory: "Vegetables",
-    quantity: "10Kg"
-  });
 
     return await uploadBytes(storageRef, blob).then(item => getDownloadURL(item.ref));
 }
@@ -47,13 +41,13 @@ export const deleteItem = async (id) => {
   return collectionrRef.doc(id).delete().then(() => true).catch(e=> console.log('Delete error ',e));
 }
 
-// export const editItem=(id,data)=>{
+export const editItem=(id,data)=>{
 
-//   console.log(data)
+  console.log(data)
 
-//   return collectionrRef.doc(id).update(data).then(()=>{
-//     console.log("Item Updated!")
-//     return true;
-//   }).catch((e)=>console.log("Error ",e))
+  return collectionrRef.doc(id).update(data).then(()=>{
+    console.log("Item Updated!")
+    return true;
+  }).catch((e)=>console.log("Error ",e))
 
-// }
+}

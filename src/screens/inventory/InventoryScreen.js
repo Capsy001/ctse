@@ -9,6 +9,7 @@ import {getItem } from "../../services/InventoryService";
 import { RoomTile } from "../../components";
 import  { useEffect, useState } from "react";
 import { FlatList, Text } from "react-native";
+import InventoryTile from "../../components/InventoryTile";
 
 const InventoryScreen = ({navigation}) => {
 
@@ -53,7 +54,7 @@ const InventoryScreen = ({navigation}) => {
         onRefresh={loadData}
             data={store}
             style={styles.list}
-            renderItem={({item,index}) => <RoomTile data={item} key={index} />}
+            renderItem={({item,index}) => <InventoryTile data={item} key={index} />}
         />
 
         <TouchableOpacity style={styles.plus} onPress={()=>navigation.navigate("AddStoreItem")}>
