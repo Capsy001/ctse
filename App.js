@@ -10,6 +10,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // HosueKeeping
 import AddService from "./src/screens/house/addService";
+import EditService from './src/screens/house/editService';
+
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import EditRoom from './src/screens/rooms/EditRoom';
 
@@ -33,6 +36,7 @@ export default function App() {
         <Stack.Screen name="ViewRoom" component={ViewRoom} />
         <Stack.Screen name="EditRoom" component={EditRoom} />
         <Stack.Screen name="AddService" component={AddService} />
+        <Stack.Screen name="EditService" component={EditService} />
         <Stack.Screen name="AddStoreItem" component={AddStoreItem} />
      
       </Stack.Navigator>

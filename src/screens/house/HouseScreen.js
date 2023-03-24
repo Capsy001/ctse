@@ -8,12 +8,24 @@ import {
   ScrollView,
   Image,
   ToastAndroid,
+  Alert,
 } from "react-native";
 import { firebase, auth } from "../../../firebaseconfig";
 import { MenuButton } from "../../components";
 import { SafeAreaView } from "react-native";
 
 const Card = ({ id, title, description, imageUrl }) => {
+  const navigation = useNavigation();
+  const askingtoDelete = () => {
+    Alert.alert("Delete Data", "Are you sure you want to delete this?", [
+      {
+        text: "No",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "Yes", onPress: () => handleDelete() },
+    ]);
+  };
   const handleDelete = async () => {
     const db = firebase.firestore();
     await db
@@ -31,6 +43,7 @@ const Card = ({ id, title, description, imageUrl }) => {
   };
 
   const handleEdit = () => {
+    navigation.navigate("EditService", { id: id, title: title, description: description, imageUrl: imageUrl });
     // navigate to edit screen with card data
     // e.g. using the React Navigation package
     // ...
@@ -43,7 +56,7 @@ const Card = ({ id, title, description, imageUrl }) => {
         <Text style={styles.text}>{description}</Text>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+        <TouchableOpacity style={styles.deleteButton} onPress={askingtoDelete}>
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
@@ -232,17 +245,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   deleteButton: {
     backgroundColor: "red",
     borderRadius: 5,
-    padding: 5,
-    marginRight: 5,
+    padding: 10,
+    marginRight: 10,
   },
   editButton: {
     backgroundColor: "blue",
     borderRadius: 5,
-    padding: 5,
-    marginLeft: 5,
+    padding: 10,
+    marginLeft: 10,
   },
   buttonText: {
     color: "white",
