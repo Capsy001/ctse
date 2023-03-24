@@ -15,6 +15,7 @@ import {
   Image,
   ToastAndroid,
   ScrollView,
+  Alert,
 } from "react-native";
 import { firebase, auth } from "../../../firebaseconfig";
 import { uploadImage } from "../../services/RoomService";
@@ -74,6 +75,17 @@ const EditService = ({ route }) => {
     } else {
       alert("Permission not granted!");
     }
+  };
+
+  const confirmEdit = async () => {
+    Alert.alert("Update Data", "Are you sure you want to update this?", [
+      {
+        text: "No",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "Yes", onPress: () => handleAddService() },
+    ]);
   };
 
   const handleAddService = async () => {
@@ -228,7 +240,7 @@ const EditService = ({ route }) => {
           </View>
 
           <View style={styles.containerInputSubmit}>
-            <Button title="Edit Service" onPress={handleAddService} />
+            <Button title="Edit Service" onPress={confirmEdit} />
           </View>
         </ScrollView>
       </SafeAreaView>
