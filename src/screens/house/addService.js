@@ -251,7 +251,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   container: {
-    backgroundColor: "#DAACF0",
     padding: 15,
     borderRadius: 15,
     margin: 5,
@@ -325,6 +324,10 @@ const styles = StyleSheet.create({
     // marginTop: 100,
     // marginBottom:-90,
     alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
   },
   btns: {
     width: "90%",

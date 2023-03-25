@@ -19,9 +19,16 @@ const EditItem = ({route,navigation}) => {
 
     const {data} = route.params;
 
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(data.image);
     const [itemName , setItemName] = useState(data.itemName);
     const [quantity , setQuantity] = useState(data.quantity);
+
+    useEffect(() => {
+      setImage(data.image);
+      setItemName(data.itemName);
+        setQuantity(data.quantity);
+        setValue(data.itemCategory);
+    }, []);
 
     // react native dropdown picker documentation
     const [open, setOpen] = useState(false);
@@ -95,7 +102,7 @@ const EditItem = ({route,navigation}) => {
     return (
     <SafeAreaView style={{flex:1}}>
         <ScrollView contentContainerStyle={{alignItems:'center'}}>
-        <Text style={styles.heading}>Add Item</Text>
+        <Text style={styles.heading}>Edit Item</Text>
             <Image source={{ uri: image ? image.uri : data.image}} style={styles.image} />
 
         <CommonButton title={'Select Image'} onPress={pickImage}/>

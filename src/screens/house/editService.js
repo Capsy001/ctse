@@ -257,7 +257,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   container: {
-    backgroundColor: "#DAACF0",
     padding: 15,
     borderRadius: 15,
     margin: 5,
@@ -336,6 +335,10 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
   },
   imagebtn: {
     backgroundColor: "#038ad3",

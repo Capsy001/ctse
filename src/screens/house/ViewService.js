@@ -147,7 +147,6 @@ export default ViewService;
 
 const styles = StyleSheet.create({
   containerheader: {
-    backgroundColor: "#DAACF0",
     padding: 15,
     borderRadius: 15,
     margin: 5,
@@ -201,6 +200,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
   },
   title: {
     fontSize: 28,
