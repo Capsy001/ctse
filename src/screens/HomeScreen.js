@@ -19,7 +19,7 @@ const tiles = [
   },
   {
     title: `Food\nManagement`,
-    screen:'Food'
+    screen:'FoodHome'
   },
   {
     title: `House\nKeeping`,

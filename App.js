@@ -20,6 +20,20 @@ import ViewStoreItems from './src/screens/inventory/ViewStoreItems';
 import EditItem from './src/screens/inventory/EditItem';
 
 
+import AddFood from './src/screens/food/AddFood';
+import AddOrder from './src/screens/food/AddOrder';
+import ManageAllFoodsMenu from './src/screens/food/ManageAllFoodsMenu';
+import EditFood from './src/screens/food/EditFood';
+import FoodHomeScreen from './src/screens/food/FoodHomeScreen';
+import UpdateOrder from './src/screens/food/UpdateOrder';
+import OrderList from './src/screens/food/OrderList';
+import OrderSummery from './src/screens/food/OrderSummery';
+import NewApprove from './src/screens/food/Approve';
+import ViewApprove from './src/screens/food/ViewApprove';
+import AddDelivery from './src/screens/food/AddDelivery';
+import ViewDelivery from './src/screens/food/ViewDelivery';
+
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -44,6 +58,21 @@ export default function App() {
         <Stack.Screen name="AddStoreItem" component={AddStoreItem} />
         <Stack.Screen name="ViewStoreItems" component={ViewStoreItems} />
         <Stack.Screen name="EditItem" component={EditItem} />
+        <Stack.Screen name="FoodHome" component={FoodHomeScreen} />
+        <Stack.Screen name="Inventory" component={InventoryScreen} />
+        <Stack.Screen name="House" component={HouseScreen} />
+        <Stack.Screen name="AddRoom" component={AddRoom} />
+        <Stack.Screen name="AddFood" component={AddFood} />
+        <Stack.Screen name="EditFood" component={EditFood} />
+       <Stack.Screen name='ManageAllFoodsMenu' options={{title: 'All Food Menu'}} component={ManageAllFoodsMenu} />
+       <Stack.Screen name="AddOrder" component={AddOrder} />
+       <Stack.Screen name="UpdateOrder" component={UpdateOrder} />
+       <Stack.Screen name="OrderList" component={OrderList} />
+       <Stack.Screen name="OrderSummery" component={OrderSummery} />
+       <Stack.Screen name="NewApprove" component={NewApprove} />
+       <Stack.Screen name="ViewApprove" component={ViewApprove} />
+       <Stack.Screen name="AddNewDelivery" component={AddDelivery} />
+       <Stack.Screen name="ViewDelivery" component={ViewDelivery} />
         
      
       </Stack.Navigator>
