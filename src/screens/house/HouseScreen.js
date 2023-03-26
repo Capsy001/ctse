@@ -176,7 +176,6 @@ const HouseScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#DAACF0",
     padding: 15,
     borderRadius: 15,
     margin: 5,
@@ -237,6 +236,7 @@ const styles = StyleSheet.create({
   },
   buttonSignOut: {
     backgroundColor: "#F03729",
+    borderRadius: 4,
     width: "100%",
     padding: 10,
     borderRadius: 0,
